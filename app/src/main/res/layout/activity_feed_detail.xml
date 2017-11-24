@@ -51,6 +51,12 @@
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
+            <Button
+                android:id="@+id/visit_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="VISIT WEBSITE" />
+
         </LinearLayout>
 
     </ScrollView>

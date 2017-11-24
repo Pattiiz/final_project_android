@@ -119,9 +119,19 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
                 srcList = new Gson().fromJson(src, List.class);
                 if (category.equals("Technology")) {
                     srcList.add(sourceModel.getTechList().get(pos));
+//                    for (String string:srcList) {
+//                        if (!string.equals(sourceModel.getTechList().get(pos))) {
+//                            srcList.add(sourceModel.getTechList().get(pos));
+//                        }
+//                    }
                 }
                 if (category.equals("Marketing")) {
                     srcList.add(sourceModel.getMarketingList().get(pos));
+//                    for (String string:srcList) {
+//                        if (!string.equals(sourceModel.getMarketingList().get(pos))) {
+//                            srcList.add(sourceModel.getMarketingList().get(pos));
+//                        }
+//                    }
                 }
                 String json = new Gson().toJson(srcList);
                 editor.putString("json", json);
