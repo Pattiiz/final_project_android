@@ -13,9 +13,9 @@ public class SourceModel {
     List<String> MarketingList = new ArrayList<>();
 
     public SourceModel() {
-        techList.add("a");
-        techList.add("b");
-        techList.add("c");
+        techList.add("https://www.blognone.com/atom.xml");
+        techList.add("http://feed.androidauthority.com");
+        techList.add("https://www.engadget.com/rss.xml");
         techList.add("A");
     }
 

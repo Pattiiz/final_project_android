@@ -47,4 +47,8 @@ public class SortItem {
     public void setList(List<FeedModel> list) {
         this.list = list;
     }
+
+    public void clearList() {
+        list.clear();
+    }
 }

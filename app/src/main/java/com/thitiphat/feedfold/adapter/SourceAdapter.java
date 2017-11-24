@@ -9,10 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.thitiphat.feedfold.R;
 import com.thitiphat.feedfold.SourceActivity;
 import com.thitiphat.feedfold.model.SourceModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by phatm on 11/24/2017.
@@ -24,6 +29,7 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
     Context context;
     SourceModel sourceModel;
     String category;
+
 
     public void setContext(Context context) {
         this.context = context;
@@ -91,15 +97,36 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
 
         @Override
         public void onClick(View v) {
+
+            int pos = getLayoutPosition();
+
             SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
 
-            if (category.equals("Technology")) {
-
+            List<String> srcList = new ArrayList<>();
+            String src = sharedPreferences.getString("json", null);
+            if (src == null) {
+                if (category.equals("Technology")) {
+                    srcList.add(sourceModel.getTechList().get(pos));
+                    Toast.makeText(context, sourceModel.getTechList().get(pos), Toast.LENGTH_SHORT).show();
+                }
+                if (category.equals("Marketing")) {
+                    srcList.add(sourceModel.getMarketingList().get(pos));
+                }
+                String json = new Gson().toJson(srcList);
+                editor.putString("json", json);
+            } else {
+                srcList = new Gson().fromJson(src, List.class);
+                if (category.equals("Technology")) {
+                    srcList.add(sourceModel.getTechList().get(pos));
+                }
+                if (category.equals("Marketing")) {
+                    srcList.add(sourceModel.getMarketingList().get(pos));
+                }
+                String json = new Gson().toJson(srcList);
+                editor.putString("json", json);
             }
-            if (category.equals("Marketing")) {
-
-            }
+            editor.apply();
         }
     }
 }

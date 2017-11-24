@@ -2,6 +2,7 @@ package com.thitiphat.feedfold;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.thitiphat.feedfold.Interface.RecyclerViewClickListener;
 import com.thitiphat.feedfold.adapter.FeedAdapter;
 import com.thitiphat.feedfold.model.FeedModel;
@@ -34,11 +36,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements RecyclerViewClickListener {
 
     List<FeedModel> feedList = new ArrayList<>();
-    String urlLink, result, title, link, description, creator, ns = null;
+    String result, title, link, description, creator, ns = null;
     String date;
     ActionBarDrawerToggle actionBarDrawerToggle;
     DrawerLayout drawerLayout;
     Context context;
+    List<String> srcList = new ArrayList<>();
+    FeedAdapter feedAdapter = new FeedAdapter();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +62,26 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-        urlLink = "https://www.blognone.com/atom.xml";
+        SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String src = sharedPreferences.getString("json", null);
+        if (src != null) {
+            srcList = new Gson().fromJson(src, List.class);
+        }
+        else {
+            return;
+        }
+
+        String urlLink = "https://www.blognone.com/atom.xml";
         String urlLink2 = "http://feed.androidauthority.com";
         String urlLink3 = "https://www.engadget.com/rss.xml";
         String urlLink4 = "https://lifehacker.com/rss";
         String urlll = "https://nuuneoi.com/blog/rssfeed.php";
 
+//        LoadXml loadXml = new LoadXml();
+//        loadXml.execute(urlLink, urlLink2, urlLink3, urlLink4, urlll);
         LoadXml loadXml = new LoadXml();
-        loadXml.execute(urlLink, urlLink2, urlLink3, urlLink4, urlll);
+        loadXml.execute(srcList);
     }
 
     @Override
@@ -86,6 +103,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
             Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
             startActivity(intent);
         }
+        if (item.getItemId() == R.id.action_refresh) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            String src = sharedPreferences.getString("json", null);
+            if (src != null) {
+                srcList = new Gson().fromJson(src, List.class);
+            }
+            LoadXml loadXml = new LoadXml();
+            feedList.clear();
+            feedAdapter.notifyDataSetChanged();
+            loadXml.execute(srcList);
+        }
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -102,15 +131,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         return position;
     }
 
-    public class LoadXml extends AsyncTask<String, Void, Boolean> {
+    public class LoadXml extends AsyncTask<List<String>, Void, Boolean> {
 
         @Override
-        protected Boolean doInBackground(String... strings) {
+        protected Boolean doInBackground(List<String>... srcList) {
             SortItem sortItem = new SortItem();
             try {
-
-                for (String string : strings) {
-                    URL url = new URL(string);
+                for (String src : srcList[0]) {
+                    URL url = new URL(src);
                     InputStream inputStream = url.openConnection().getInputStream();
 
 //                XmlPullParser xmlPullParser = Xml.newPullParser();
@@ -123,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
 
                 }
                 feedList = sortItem.sortList(feedList);
+                sortItem.clearList();
                 return true;
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -136,7 +165,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            FeedAdapter feedAdapter = new FeedAdapter();
+//            FeedAdapter feedAdapter = new FeedAdapter();
+
             feedAdapter.setFeedList(feedList, MainActivity.this);
 
             RecyclerView recyclerView = findViewById(R.id.list);
