@@ -22,6 +22,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.FileNotFoundException;
@@ -54,6 +55,9 @@ public class ItemDetailActivity extends AppCompatActivity implements View.OnClic
         });
 
         Intent intent = getIntent();
+
+        Button visit = findViewById(R.id.visit_btn);
+        visit.setOnClickListener(this);
 
         TextView tvDetailTitle = findViewById(R.id.tvDetailTitle);
         tvDetailTitle.setText(intent.getStringExtra("title"), null);

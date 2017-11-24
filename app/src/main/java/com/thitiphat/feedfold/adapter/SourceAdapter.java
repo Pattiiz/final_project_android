@@ -1,7 +1,6 @@
 package com.thitiphat.feedfold.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.thitiphat.feedfold.R;
-import com.thitiphat.feedfold.SourceActivity;
 import com.thitiphat.feedfold.model.SourceModel;
 
 import java.util.ArrayList;
@@ -64,10 +62,10 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
         TextView name = holder.textView;
         ImageView image = holder.imageView;
         if (category.equals("Technology")) {
-            name.setText(sourceModel.getTechList().get(position));
+            name.setText(sourceModel.getTechUrl().get(position));
         }
         if (category.equals("Marketing")) {
-            name.setText(sourceModel.getMarketingList().get(position));
+            name.setText(sourceModel.getMarketingUrl().get(position));
         }
 
     }
@@ -75,10 +73,10 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
     @Override
     public int getItemCount() {
         if (category.equals("Technology")) {
-            return sourceModel.getTechList().size();
+            return sourceModel.getTechUrl().size();
         }
         if (category.equals("Marketing")) {
-            return sourceModel.getMarketingList().size();
+            return sourceModel.getMarketingUrl().size();
         }
         return 0;
     }
@@ -107,29 +105,29 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
             String src = sharedPreferences.getString("json", null);
             if (src == null) {
                 if (category.equals("Technology")) {
-                    srcList.add(sourceModel.getTechList().get(pos));
-                    Toast.makeText(context, sourceModel.getTechList().get(pos), Toast.LENGTH_SHORT).show();
+                    srcList.add(sourceModel.getTechUrl().get(pos));
+                    Toast.makeText(context, sourceModel.getTechUrl().get(pos), Toast.LENGTH_SHORT).show();
                 }
                 if (category.equals("Marketing")) {
-                    srcList.add(sourceModel.getMarketingList().get(pos));
+                    srcList.add(sourceModel.getMarketingUrl().get(pos));
                 }
                 String json = new Gson().toJson(srcList);
                 editor.putString("json", json);
             } else {
                 srcList = new Gson().fromJson(src, List.class);
                 if (category.equals("Technology")) {
-                    srcList.add(sourceModel.getTechList().get(pos));
+                    srcList.add(sourceModel.getTechUrl().get(pos));
 //                    for (String string:srcList) {
-//                        if (!string.equals(sourceModel.getTechList().get(pos))) {
-//                            srcList.add(sourceModel.getTechList().get(pos));
+//                        if (!string.equals(sourceModel.getTechUrl().get(pos))) {
+//                            srcList.add(sourceModel.getTechUrl().get(pos));
 //                        }
 //                    }
                 }
                 if (category.equals("Marketing")) {
-                    srcList.add(sourceModel.getMarketingList().get(pos));
+                    srcList.add(sourceModel.getMarketingUrl().get(pos));
 //                    for (String string:srcList) {
-//                        if (!string.equals(sourceModel.getMarketingList().get(pos))) {
-//                            srcList.add(sourceModel.getMarketingList().get(pos));
+//                        if (!string.equals(sourceModel.getMarketingUrl().get(pos))) {
+//                            srcList.add(sourceModel.getMarketingUrl().get(pos));
 //                        }
 //                    }
                 }

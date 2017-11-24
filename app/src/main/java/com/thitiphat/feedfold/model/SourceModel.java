@@ -9,29 +9,34 @@ import java.util.List;
 
 public class SourceModel {
 
-    List<String> techList = new ArrayList<>();
-    List<String> MarketingList = new ArrayList<>();
+    List<String> techUrl = new ArrayList<>();
+    List<String> techName = new ArrayList<>();
+    List<String> marketingUrl = new ArrayList<>();
+    List<String> marketingName = new ArrayList<>();
 
     public SourceModel() {
-        techList.add("https://www.blognone.com/atom.xml");
-        techList.add("http://feed.androidauthority.com");
-        techList.add("https://www.engadget.com/rss.xml");
-        techList.add("A");
+        techUrl.add("https://www.blognone.com/atom.xml");
+        techUrl.add("https://www.engadget.com/rss.xml");
+        techUrl.add("http://feed.androidauthority.com");
+
+        techName.add("Blognone");
+        techName.add("Engadget");
+        techName.add("Android Authority");
     }
 
-    public List<String> getTechList() {
-        return techList;
+    public List<String> getTechUrl() {
+        return techUrl;
     }
 
-    public void setTechList(List<String> techList) {
-        this.techList = techList;
+    public void setTechUrl(List<String> techUrl) {
+        this.techUrl = techUrl;
     }
 
-    public List<String> getMarketingList() {
-        return MarketingList;
+    public List<String> getMarketingUrl() {
+        return marketingUrl;
     }
 
-    public void setMarketingList(List<String> marketingList) {
-        MarketingList = marketingList;
+    public void setMarketingUrl(List<String> marketingUrl) {
+        this.marketingUrl = marketingUrl;
     }
 }

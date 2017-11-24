@@ -5,9 +5,11 @@
     <item
         android:id="@+id/action_refresh"
         android:title="refresh"
+        android:icon="@drawable/ic_refresh"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_add"
+        android:icon="@drawable/ic_add"
         android:title="add"
         app:showAsAction="always"
         />
