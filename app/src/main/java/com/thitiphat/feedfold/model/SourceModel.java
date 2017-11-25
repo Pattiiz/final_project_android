@@ -24,6 +24,22 @@ public class SourceModel {
         techName.add("Android Authority");
     }
 
+    public List<String> getTechName() {
+        return techName;
+    }
+
+    public void setTechName(List<String> techName) {
+        this.techName = techName;
+    }
+
+    public List<String> getMarketingName() {
+        return marketingName;
+    }
+
+    public void setMarketingName(List<String> marketingName) {
+        this.marketingName = marketingName;
+    }
+
     public List<String> getTechUrl() {
         return techUrl;
     }

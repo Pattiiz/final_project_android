@@ -3,6 +3,8 @@ package com.thitiphat.feedfold;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -10,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +22,7 @@ import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.thitiphat.feedfold.Interface.RecyclerViewClickListener;
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-        NavigationView navigationView = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(this);
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
@@ -72,16 +76,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         String src = sharedPreferences.getString("json", null);
         if (src != null) {
             srcList = new Gson().fromJson(src, List.class);
-        }
-        else {
+        } else {
             return;
         }
 
-        String urlLink = "https://www.blognone.com/atom.xml";
-        String urlLink2 = "http://feed.androidauthority.com";
-        String urlLink3 = "https://www.engadget.com/rss.xml";
-        String urlLink4 = "https://lifehacker.com/rss";
-        String urlll = "https://nuuneoi.com/blog/rssfeed.php";
+        if (!checkInernetConnection()) {
+            displayDialog();
+        }
 
 //        LoadXml loadXml = new LoadXml();
 //        loadXml.execute(urlLink, urlLink2, urlLink3, urlLink4, urlll);
@@ -135,16 +136,60 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
 //        startActivity(intent);
         return position;
     }
-    
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.nav_timeline) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            String src = sharedPreferences.getString("json", null);
+            if (src != null) {
+                srcList = new Gson().fromJson(src, List.class);
+            }
+            LoadXml loadXml = new LoadXml();
+            feedList.clear();
+            feedAdapter.notifyDataSetChanged();
+            loadXml.execute(srcList);
 
+            drawerLayout.closeDrawers();
         }
         if (item.getItemId() == R.id.nav_bookmark) {
 
+            SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            String src = sharedPreferences.getString("bookmark", null);
+
+
+            feedList.clear();
+            feedAdapter.notifyDataSetChanged();
+
+            if (src != null) {
+                feedList = new Gson().fromJson(src, List.class);
+            }
+
+            setAdapter();
+
+            drawerLayout.closeDrawers();
         }
         return false;
+    }
+
+    public Boolean checkInernetConnection() {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return isConnected;
+    }
+
+    public void displayDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Please connect to Internet")
+                .setTitle("No Internet Connection");
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public class LoadXml extends AsyncTask<List<String>, Void, Boolean> {
@@ -183,12 +228,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         protected void onPostExecute(Boolean aBoolean) {
 //            FeedAdapter feedAdapter = new FeedAdapter();
 
-            feedAdapter.setFeedList(feedList, MainActivity.this);
-
-            RecyclerView recyclerView = findViewById(R.id.list);
-            recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-            recyclerView.setAdapter(feedAdapter);
+            setAdapter();
         }
+    }
+
+    public void setAdapter() {
+        feedAdapter.setFeedList(feedList, MainActivity.this);
+
+        RecyclerView recyclerView = findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        recyclerView.setAdapter(feedAdapter);
     }
 
     public List<FeedModel> readFeed(InputStream inputStream) throws XmlPullParserException, IOException {

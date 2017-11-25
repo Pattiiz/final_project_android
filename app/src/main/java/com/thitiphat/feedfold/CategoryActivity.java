@@ -1,20 +1,21 @@
 package com.thitiphat.feedfold;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 
 
-import com.thitiphat.feedfold.adapter.CategoryAdapter;
 import com.thitiphat.feedfold.model.CategoryModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryActivity extends AppCompatActivity {
+public class CategoryActivity extends AppCompatActivity implements View.OnClickListener {
+
+    CategoryModel categoryModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Select Category");
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -34,19 +36,26 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        CategoryModel categoryModel = new CategoryModel();
+        categoryModel = new CategoryModel();
 
-        List<String> list = new ArrayList<>();
-        list.add("a");
-        list.add("b");
+        ImageView ivTech = findViewById(R.id.ivCategoryTech);
+        ivTech.setOnClickListener(this);
 
-        CategoryAdapter categoryAdapter = new CategoryAdapter();
-        categoryAdapter.setCategoryModel(categoryModel);
-        categoryAdapter.setContext(this);
-//        categoryAdapter.setList(list);
+        ImageView ivMark = findViewById(R.id.ivCategoryMark);
+        ivMark.setOnClickListener(this);
+    }
 
-        RecyclerView recyclerView = findViewById(R.id.rvCategoryList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(CategoryActivity.this));
-        recyclerView.setAdapter(categoryAdapter);
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.ivCategoryTech) {
+            Intent intent = new Intent(this, SourceActivity.class);
+            intent.putExtra("category", categoryModel.getCategory().get(0));
+            startActivity(intent);
+        }
+        if (v.getId() == R.id.ivCategoryMark) {
+            Intent intent = new Intent(this, SourceActivity.class);
+            intent.putExtra("category", categoryModel.getCategory().get(1));
+            startActivity(intent);
+        }
     }
 }

@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.thitiphat.feedfold.adapter.CategoryAdapter;
 import com.thitiphat.feedfold.adapter.SourceAdapter;
 import com.thitiphat.feedfold.model.SourceModel;
 
@@ -20,7 +19,10 @@ public class SourceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_source);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Add Source");
         setSupportActionBar(toolbar);
+
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

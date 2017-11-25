@@ -2,6 +2,7 @@ package com.thitiphat.feedfold.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,13 +62,13 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
     public void onBindViewHolder(SourceAdapter.Holder holder, int position) {
         TextView name = holder.textView;
         ImageView image = holder.imageView;
+
         if (category.equals("Technology")) {
-            name.setText(sourceModel.getTechUrl().get(position));
+            name.setText(sourceModel.getTechName().get(position));
         }
         if (category.equals("Marketing")) {
-            name.setText(sourceModel.getMarketingUrl().get(position));
+            name.setText(sourceModel.getMarketingName().get(position));
         }
-
     }
 
     @Override
@@ -106,10 +107,11 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
             if (src == null) {
                 if (category.equals("Technology")) {
                     srcList.add(sourceModel.getTechUrl().get(pos));
-                    Toast.makeText(context, sourceModel.getTechUrl().get(pos), Toast.LENGTH_SHORT).show();
+                    displaySnackbar(sourceModel.getTechName().get(pos), v);
                 }
                 if (category.equals("Marketing")) {
                     srcList.add(sourceModel.getMarketingUrl().get(pos));
+                    displaySnackbar(sourceModel.getMarketingName().get(pos), v);
                 }
                 String json = new Gson().toJson(srcList);
                 editor.putString("json", json);
@@ -117,24 +119,27 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
                 srcList = new Gson().fromJson(src, List.class);
                 if (category.equals("Technology")) {
                     srcList.add(sourceModel.getTechUrl().get(pos));
-//                    for (String string:srcList) {
-//                        if (!string.equals(sourceModel.getTechUrl().get(pos))) {
-//                            srcList.add(sourceModel.getTechUrl().get(pos));
-//                        }
-//                    }
+                    displaySnackbar(sourceModel.getTechName().get(pos), v);
                 }
                 if (category.equals("Marketing")) {
+
                     srcList.add(sourceModel.getMarketingUrl().get(pos));
-//                    for (String string:srcList) {
-//                        if (!string.equals(sourceModel.getMarketingUrl().get(pos))) {
-//                            srcList.add(sourceModel.getMarketingUrl().get(pos));
-//                        }
-//                    }
+                    displaySnackbar(sourceModel.getMarketingName().get(pos), v);
                 }
                 String json = new Gson().toJson(srcList);
                 editor.putString("json", json);
             }
             editor.apply();
         }
+    }
+
+    public void displaySnackbar(String string, View itemView) {
+        Snackbar.make(itemView, "Add " + string + " to Timeline", Snackbar.LENGTH_LONG)
+                .setAction("Undo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
     }
 }

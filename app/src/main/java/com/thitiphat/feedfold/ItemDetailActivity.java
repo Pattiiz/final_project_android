@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +37,7 @@ public class ItemDetailActivity extends AppCompatActivity implements View.OnClic
 
     TextView tvDesc;
     String TAG = "Test Img Getter";
+    ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,12 @@ public class ItemDetailActivity extends AppCompatActivity implements View.OnClic
         String source = intent.getStringExtra("description");
         Spanned spanned = Html.fromHtml(source, this, null);
         tvDesc.setText(spanned);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
     }
 
     @Override

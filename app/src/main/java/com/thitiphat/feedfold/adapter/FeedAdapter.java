@@ -109,7 +109,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.Holder> {
                         }).show();
 
 
-                String bm = new Gson().toJson(finalBookmarkList);
+                String bm = new Gson().toJson(bookmarkList);
                 editor.putString("bookmark", bm);
                 editor.apply();
                 return true;
