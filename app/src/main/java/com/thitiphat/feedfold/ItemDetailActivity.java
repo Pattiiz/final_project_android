@@ -1,6 +1,8 @@
 package com.thitiphat.feedfold;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,9 +15,11 @@ import android.os.Build;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
@@ -25,19 +29,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.thitiphat.feedfold.model.FeedModel;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemDetailActivity extends AppCompatActivity implements View.OnClickListener, Html.ImageGetter {
 
     TextView tvDesc;
     String TAG = "Test Img Getter";
     ActionBarDrawerToggle actionBarDrawerToggle;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +76,9 @@ public class ItemDetailActivity extends AppCompatActivity implements View.OnClic
         TextView tvDetailTitle = findViewById(R.id.tvDetailTitle);
         tvDetailTitle.setText(intent.getStringExtra("title"), null);
         tvDetailTitle.setOnClickListener(this);
-//        TextView tvDesc = findViewById(R.id.tvDetail);
+
         tvDesc = findViewById(R.id.tvDetail);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            tvDesc.setText("\n" + Html.fromHtml(intent.getStringExtra("description").toString(), Html.FROM_HTML_MODE_COMPACT) + "\n");
-//        } else {
-//            tvDesc.setText("\n" + Html.fromHtml(intent.getStringExtra("description").toString()) + "\n");
-//        }
+
         String source = intent.getStringExtra("description");
         Spanned spanned = Html.fromHtml(source, this, null);
         tvDesc.setText(spanned);
@@ -79,7 +86,7 @@ public class ItemDetailActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        getMenuInflater().inflate(R.menu.detail_page_menu, menu);
         return true;
     }
 
@@ -95,10 +102,39 @@ public class ItemDetailActivity extends AppCompatActivity implements View.OnClic
             finish();
         }
         if (item.getItemId() == R.id.action_share) {
-
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "AndroidSolved");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, (getIntent().getStringExtra("link")));
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
         }
         if (item.getItemId() == R.id.action_bookmark) {
 
+//            SharedPreferences sharedPreferences = getSharedPreferences("list", Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//            List<FeedModel> bookmarkList = new ArrayList<>();
+//            final String bookmark = sharedPreferences.getString("bookmark", null);
+//            bookmarkList = new Gson().fromJson(bookmark, List.class);
+//
+//            FeedModel feedModel = new FeedModel();
+//            feedModel.setTitle(intent.getStringExtra("title"));
+//            feedModel.setLink(intent.getStringExtra("description"));
+//            bookmarkList.add(feedModel);
+//
+//            LinearLayout linear = findViewById(R.id.linear);
+//            Snackbar.make(linear, intent.getStringExtra("title"), Snackbar.LENGTH_LONG)
+//                    .setAction("Undo", new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//
+//                        }
+//                    }).show();
+//
+//
+//            String bm = new Gson().toJson(bookmarkList);
+//            editor.putString("bookmark", bm);
+//            editor.apply();
         }
         return super.onOptionsItemSelected(item);
     }

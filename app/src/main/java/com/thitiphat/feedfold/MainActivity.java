@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     Context context;
     List<String> srcList = new ArrayList<>();
     FeedAdapter feedAdapter = new FeedAdapter();
-    TextView userTwitter;
 
 
     @Override
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userTwitter = findViewById(R.id.tv_userTW);
+
 
         context = getApplicationContext();
 
@@ -139,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        userTwitter.setText(getIntent().getStringExtra("userTwitter"));
         return super.onOptionsItemSelected(item);
     }
 
@@ -163,6 +161,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
             feedAdapter.notifyDataSetChanged();
             loadXml.execute(srcList);
 
+            TextView userTwitter = findViewById(R.id.tv_userTW);
+            userTwitter.setText(getIntent().getStringExtra("userTwitter"));
+
             drawerLayout.closeDrawers();
         }
         if (item.getItemId() == R.id.nav_bookmark) {
@@ -176,10 +177,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
 //                feedList = new Gson().fromJson(src, List.class);
 //            }
 //            setAdapter();
-//            drawerLayout.closeDrawers();
-            TextView textView = findViewById(R.id.tv_userTW);
-            textView.setText(getIntent().getStringExtra("userTwitter"));
-            drawerLayout.openDrawer(Gravity.START);
+
+            TextView userTwitter = findViewById(R.id.tv_userTW);
+            userTwitter.setText(getIntent().getStringExtra("userTwitter"));
+            drawerLayout.closeDrawers();
         }
         return false;
     }
