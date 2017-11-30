@@ -10,6 +10,8 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -19,10 +21,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Xml;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -31,6 +35,9 @@ import com.thitiphat.feedfold.adapter.FeedAdapter;
 import com.thitiphat.feedfold.model.FeedModel;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
@@ -55,12 +62,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     Context context;
     List<String> srcList = new ArrayList<>();
     FeedAdapter feedAdapter = new FeedAdapter();
+    TextView userTwitter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        userTwitter = findViewById(R.id.tv_userTW);
 
         context = getApplicationContext();
 
@@ -73,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
+
 
         NavigationView navigationView = findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(this);
@@ -128,9 +139,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        userTwitter.setText(getIntent().getStringExtra("userTwitter"));
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public int reyclerViewListClicked(View v, int position) {
@@ -155,17 +166,20 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
             drawerLayout.closeDrawers();
         }
         if (item.getItemId() == R.id.nav_bookmark) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            String src = sharedPreferences.getString("bookmark", null);
-
-            feedList.clear();
-            feedAdapter.notifyDataSetChanged();
-            if (src != null) {
-                feedList = new Gson().fromJson(src, List.class);
-            }
-            setAdapter();
-            drawerLayout.closeDrawers();
+//            SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            String src = sharedPreferences.getString("bookmark", null);
+//
+//            feedList.clear();
+//            feedAdapter.notifyDataSetChanged();
+//            if (src != null) {
+//                feedList = new Gson().fromJson(src, List.class);
+//            }
+//            setAdapter();
+//            drawerLayout.closeDrawers();
+            TextView textView = findViewById(R.id.tv_userTW);
+            textView.setText(getIntent().getStringExtra("userTwitter"));
+            drawerLayout.openDrawer(Gravity.START);
         }
         return false;
     }

@@ -16,7 +16,7 @@
             android:id="@+id/ivLogo"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="#aabbcc" />
+            android:src="#263238" />
 
         <TextView
             android:id="@+id/tvSrcName"
@@ -25,6 +25,7 @@
             android:layout_marginLeft="32dp"
             android:gravity="center_vertical"
             android:text="Hello"
+            android:textColor="#fafafa"
             android:textSize="18sp" />
 
     </LinearLayout>

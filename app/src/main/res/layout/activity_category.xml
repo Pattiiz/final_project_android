@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#37474f"
     android:orientation="vertical"
     tools:context="com.thitiphat.feedfold.CategoryActivity">
 
@@ -43,8 +44,9 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="#aaaaaa"
-                    android:clickable="true" />
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_technology" />
 
                 <TextView
                     android:id="@+id/tvCategoryTech"
@@ -52,7 +54,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="80dp"
-                    android:text="Technology" />
+                    android:text="Technology"
+                    android:textColor="#fafafa"
+                    android:textSize="22sp" />
 
             </RelativeLayout>
 
@@ -67,8 +71,9 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="#aaaaaa"
-                    android:clickable="true" />
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_marketing" />
 
                 <TextView
                     android:id="@+id/tvCategoryMark"
@@ -76,7 +81,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="80dp"
-                    android:text="Marketing" />
+                    android:text="Marketing"
+                    android:textColor="#263238"
+                    android:textSize="22sp" />
 
             </RelativeLayout>
 
@@ -91,8 +98,9 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="#aaaaaa"
-                    android:clickable="true" />
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_design" />
 
                 <TextView
                     android:id="@+id/tvCategoryDesign"
@@ -100,7 +108,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="80dp"
-                    android:text="Design" />
+                    android:text="Design"
+                    android:textColor="#263238"
+                    android:textSize="22sp" />
 
             </RelativeLayout>
 
@@ -115,8 +125,9 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="#aaaaaa"
-                    android:clickable="true" />
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_photograph" />
 
                 <TextView
                     android:id="@+id/tvCategoryPhoto"
@@ -124,7 +135,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="80dp"
-                    android:text="Photograph" />
+                    android:text="Photograph"
+                    android:textColor="#fafafa"
+                    android:textSize="22sp" />
 
             </RelativeLayout>
 
