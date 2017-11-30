@@ -16,7 +16,8 @@ public class CategoryModel {
     public CategoryModel() {
         this.category.add("Technology");
         this.category.add("Marketing");
-        this.category.add("C");
+        this.category.add("Design");
+        this.category.add("Photograph");
     }
 
     public CategoryModel(List<String> category, List<String> imgSrc) {

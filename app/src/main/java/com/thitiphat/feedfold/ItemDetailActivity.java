@@ -94,6 +94,12 @@ public class ItemDetailActivity extends AppCompatActivity implements View.OnClic
         if (item.getItemId() == R.id.showHome) {
             finish();
         }
+        if (item.getItemId() == R.id.action_share) {
+
+        }
+        if (item.getItemId() == R.id.action_bookmark) {
+
+        }
         return super.onOptionsItemSelected(item);
     }
 

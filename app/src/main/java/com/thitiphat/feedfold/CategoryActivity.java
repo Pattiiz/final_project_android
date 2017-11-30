@@ -43,18 +43,31 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
 
         ImageView ivMark = findViewById(R.id.ivCategoryMark);
         ivMark.setOnClickListener(this);
+
+        ImageView ivDesign = findViewById(R.id.ivCategoryDesign);
+        ivDesign.setOnClickListener(this);
+
+        ImageView ivPhotograph = findViewById(R.id.ivCategoryPhoto);
+        ivPhotograph.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
+        Intent intent = new Intent(this, SourceActivity.class);
         if (v.getId() == R.id.ivCategoryTech) {
-            Intent intent = new Intent(this, SourceActivity.class);
             intent.putExtra("category", categoryModel.getCategory().get(0));
             startActivity(intent);
         }
         if (v.getId() == R.id.ivCategoryMark) {
-            Intent intent = new Intent(this, SourceActivity.class);
             intent.putExtra("category", categoryModel.getCategory().get(1));
+            startActivity(intent);
+        }
+        if (v.getId() == R.id.ivCategoryDesign) {
+            intent.putExtra("category", categoryModel.getCategory().get(2));
+            startActivity(intent);
+        }
+        if (v.getId() == R.id.ivCategoryPhoto) {
+            intent.putExtra("category", categoryModel.getCategory().get(3));
             startActivity(intent);
         }
     }

@@ -69,6 +69,12 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
         if (category.equals("Marketing")) {
             name.setText(sourceModel.getMarketingName().get(position));
         }
+        if (category.equals("Design")) {
+            name.setText(sourceModel.getDesignName().get(position));
+        }
+        if (category.equals("Photograph")) {
+            name.setText(sourceModel.getPtgName().get(position));
+        }
     }
 
     @Override
@@ -78,6 +84,12 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
         }
         if (category.equals("Marketing")) {
             return sourceModel.getMarketingUrl().size();
+        }
+        if (category.equals("Design")) {
+            return sourceModel.getDesignUrl().size();
+        }
+        if (category.equals("Photograph")) {
+            return sourceModel.getPtgUrl().size();
         }
         return 0;
     }
@@ -113,6 +125,14 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
                     srcList.add(sourceModel.getMarketingUrl().get(pos));
                     displaySnackbar(sourceModel.getMarketingName().get(pos), v);
                 }
+                if (category.equals("Design")) {
+                    srcList.add(sourceModel.getMarketingUrl().get(pos));
+                    displaySnackbar(sourceModel.getDesignName().get(pos), v);
+                }
+                if (category.equals("Photograph")) {
+                    srcList.add(sourceModel.getMarketingUrl().get(pos));
+                    displaySnackbar(sourceModel.getPtgName().get(pos), v);
+                }
                 String json = new Gson().toJson(srcList);
                 editor.putString("json", json);
             } else {
@@ -122,9 +142,16 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
                     displaySnackbar(sourceModel.getTechName().get(pos), v);
                 }
                 if (category.equals("Marketing")) {
-
                     srcList.add(sourceModel.getMarketingUrl().get(pos));
                     displaySnackbar(sourceModel.getMarketingName().get(pos), v);
+                }
+                if (category.equals("Design")) {
+                    srcList.add(sourceModel.getDesignUrl().get(pos));
+                    displaySnackbar(sourceModel.getDesignName().get(pos), v);
+                }
+                if (category.equals("Photograph")) {
+                    srcList.add(sourceModel.getPtgUrl().get(pos));
+                    displaySnackbar(sourceModel.getPtgName().get(pos), v);
                 }
                 String json = new Gson().toJson(srcList);
                 editor.putString("json", json);

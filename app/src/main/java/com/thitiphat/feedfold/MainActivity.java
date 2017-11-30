@@ -22,12 +22,18 @@ import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.thitiphat.feedfold.Interface.RecyclerViewClickListener;
 import com.thitiphat.feedfold.adapter.FeedAdapter;
 import com.thitiphat.feedfold.model.FeedModel;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -84,8 +90,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
             displayDialog();
         }
 
-//        LoadXml loadXml = new LoadXml();
-//        loadXml.execute(urlLink, urlLink2, urlLink3, urlLink4, urlll);
         LoadXml loadXml = new LoadXml();
         loadXml.execute(srcList);
     }
@@ -131,9 +135,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     @Override
     public int reyclerViewListClicked(View v, int position) {
         FeedAdapter feedAdapter = new FeedAdapter(getApplicationContext(), this);
-//        Intent intent = new Intent(MainActivity.this, ItemDetailActivity.class);
-//        intent.putExtra("ITEM", feedList.get(position).getTitle());
-//        startActivity(intent);
         return position;
     }
 
@@ -154,21 +155,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
             drawerLayout.closeDrawers();
         }
         if (item.getItemId() == R.id.nav_bookmark) {
-
             SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             String src = sharedPreferences.getString("bookmark", null);
 
-
             feedList.clear();
             feedAdapter.notifyDataSetChanged();
-
             if (src != null) {
                 feedList = new Gson().fromJson(src, List.class);
             }
-
             setAdapter();
-
             drawerLayout.closeDrawers();
         }
         return false;
@@ -201,15 +197,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
                 for (String src : srcList[0]) {
                     URL url = new URL(src);
                     InputStream inputStream = url.openConnection().getInputStream();
-
-//                XmlPullParser xmlPullParser = Xml.newPullParser();
-//                xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-//                xmlPullParser.setInput(inputStream, null);
-//                xmlPullParser.nextTag();
-//                feedList = readFeedGoogle(xmlPullParser);
-
                     feedList = readFeed(inputStream);
-
                 }
                 feedList = sortItem.sortList(feedList);
                 sortItem.clearList();
@@ -226,8 +214,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-//            FeedAdapter feedAdapter = new FeedAdapter();
-
             setAdapter();
         }
     }
@@ -297,97 +283,4 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         return feedList;
     }
 
-    public List<FeedModel> readFeedGoogle(XmlPullParser xmlPullParser) throws XmlPullParserException, IOException {
-        List<FeedModel> entries = new ArrayList();
-
-//        XmlPullParser xmlPullParser = Xml.newPullParser();
-//        xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-//        xmlPullParser.setInput(inputStream, "UTF-8");
-//        xmlPullParser.nextTag();
-
-        xmlPullParser.require(XmlPullParser.START_TAG, ns, "channel");
-        while (xmlPullParser.next() != XmlPullParser.END_TAG) {
-            if (xmlPullParser.getEventType() != XmlPullParser.START_TAG) {
-                continue;
-            }
-            String name = xmlPullParser.getName();
-            if (name.equals("item")) {
-                entries.add(readEntry(xmlPullParser));
-            } else {
-                skip(xmlPullParser);
-            }
-        }
-        return entries;
-    }
-
-    private FeedModel readEntry(XmlPullParser xmlPullParser) throws IOException, XmlPullParserException {
-        xmlPullParser.require(XmlPullParser.START_TAG, ns, "item");
-        String title = null;
-        String link = null;
-        String description = null;
-
-        while (xmlPullParser.next() != XmlPullParser.END_TAG) {
-            String name = xmlPullParser.getName();
-            if (xmlPullParser.getEventType() != XmlPullParser.START_TAG) {
-                continue;
-            }
-            if (xmlPullParser.next() == XmlPullParser.TEXT) {
-                result = xmlPullParser.getText();
-                xmlPullParser.nextTag();
-            }
-            if (name.equalsIgnoreCase("title")) {
-                title = result;
-            }
-            if (name.equalsIgnoreCase("link")) {
-                link = result;
-            }
-            if (name.equalsIgnoreCase("description")) {
-                description = result;
-            } else {
-                skip(xmlPullParser);
-            }
-        }
-        return new FeedModel(title, link, description);
-    }
-
-    private String readTitle(XmlPullParser xmlPullParser) throws IOException, XmlPullParserException {
-        xmlPullParser.require(XmlPullParser.START_TAG, ns, "title");
-        String title = readText(xmlPullParser);
-        xmlPullParser.require(XmlPullParser.END_TAG, ns, "title");
-        return title;
-    }
-
-    private String readDesc(XmlPullParser xmlPullParser) throws IOException, XmlPullParserException {
-        xmlPullParser.require(XmlPullParser.START_TAG, ns, "description");
-        String title = readText(xmlPullParser);
-        xmlPullParser.require(XmlPullParser.END_TAG, ns, "description");
-        return title;
-    }
-
-    public String readText(XmlPullParser xmlPullParser) throws IOException, XmlPullParserException {
-        String result = "";
-        if (xmlPullParser.next() == XmlPullParser.TEXT) {
-            result = xmlPullParser.getText();
-            xmlPullParser.nextTag();
-        }
-        return result;
-    }
-
-    private void skip(XmlPullParser xmlPullParser) throws XmlPullParserException, IOException {
-
-        if (xmlPullParser.getEventType() != XmlPullParser.START_TAG) {
-            throw new IllegalStateException();
-        }
-        int depth = 1;
-        while (depth != 0) {
-            switch (xmlPullParser.next()) {
-                case XmlPullParser.END_TAG:
-                    depth--;
-                    break;
-                case XmlPullParser.START_TAG:
-                    depth++;
-                    break;
-            }
-        }
-    }
 }

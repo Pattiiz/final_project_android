@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -52,14 +50,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.Holder> {
 
     public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-        public TextView tvTitle, tvLink, tvDescription;
+        public TextView tvTitle, tvDate, tvDescription;
 
         public Holder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
             tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvLink = itemView.findViewById(R.id.tvLink);
+            tvDate = itemView.findViewById(R.id.tvDate);
         }
 
         @Override
@@ -130,10 +128,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.Holder> {
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         TextView title = holder.tvTitle;
-        TextView link = holder.tvLink;
+        TextView date = holder.tvDate;
 //        if (position != 0) {
-        title.setText(feedList.get(position).getTitle().toString());
-        link.setText(feedList.get(position).getLink().toString());
+        title.setText(feedList.get(position).getTitle());
+        date.setText(feedList.get(position).getPubDate());
 //        }
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
