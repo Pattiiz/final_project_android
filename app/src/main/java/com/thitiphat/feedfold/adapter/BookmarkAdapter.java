@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.thitiphat.feedfold.R;
-import com.thitiphat.feedfold.model.FeedModel;
+import com.thitiphat.feedfold.util.FeedModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.thitiphat.feedfold;
+package com.thitiphat.feedfold.util;
 
-import com.thitiphat.feedfold.model.FeedModel;
+import com.thitiphat.feedfold.util.FeedModel;
 
 import java.util.ArrayList;
 import java.util.Collections;

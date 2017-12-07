@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#37474f"
     android:orientation="vertical"
-    tools:context="com.thitiphat.feedfold.SourceActivity">
+    tools:context="com.thitiphat.feedfold.activity.SourceActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

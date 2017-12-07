@@ -1,4 +1,4 @@
-package com.thitiphat.feedfold.model;
+package com.thitiphat.feedfold.util;
 
 /**
  * Created by phatm on 11/24/2017.

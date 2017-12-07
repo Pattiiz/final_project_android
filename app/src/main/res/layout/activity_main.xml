@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#37474F"
     android:fitsSystemWindows="true"
-    tools:context="com.thitiphat.feedfold.MainActivity">
+    tools:context="com.thitiphat.feedfold.activity.MainActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"

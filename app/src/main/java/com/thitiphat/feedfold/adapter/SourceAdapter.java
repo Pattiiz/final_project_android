@@ -9,11 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.thitiphat.feedfold.R;
-import com.thitiphat.feedfold.model.SourceModel;
+import com.thitiphat.feedfold.util.SourceModel;
 
 import java.util.ArrayList;
 import java.util.List;

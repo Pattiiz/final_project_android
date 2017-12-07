@@ -1,4 +1,4 @@
-package com.thitiphat.feedfold;
+package com.thitiphat.feedfold.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,8 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.google.gson.Gson;
+import com.thitiphat.feedfold.R;
 import com.thitiphat.feedfold.adapter.BookmarkAdapter;
-import com.thitiphat.feedfold.model.FeedModel;
+import com.thitiphat.feedfold.util.FeedModel;
 
 import java.util.ArrayList;
 import java.util.List;

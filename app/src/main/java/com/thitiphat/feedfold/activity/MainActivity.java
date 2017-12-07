@@ -1,4 +1,4 @@
-package com.thitiphat.feedfold;
+package com.thitiphat.feedfold.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,8 +26,10 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.thitiphat.feedfold.Interface.RecyclerViewClickListener;
+import com.thitiphat.feedfold.R;
+import com.thitiphat.feedfold.util.SortItem;
 import com.thitiphat.feedfold.adapter.FeedAdapter;
-import com.thitiphat.feedfold.model.FeedModel;
+import com.thitiphat.feedfold.util.FeedModel;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

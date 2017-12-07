@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.thitiphat.feedfold.model.FeedModel;
-import com.thitiphat.feedfold.ItemDetailActivity;
+import com.thitiphat.feedfold.util.FeedModel;
+import com.thitiphat.feedfold.activity.ItemDetailActivity;
 import com.thitiphat.feedfold.R;
 import com.thitiphat.feedfold.Interface.RecyclerViewClickListener;
 

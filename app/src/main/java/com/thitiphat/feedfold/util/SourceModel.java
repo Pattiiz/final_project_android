@@ -1,4 +1,4 @@
-package com.thitiphat.feedfold.model;
+package com.thitiphat.feedfold.util;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.thitiphat.feedfold;
+package com.thitiphat.feedfold.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 
-import com.thitiphat.feedfold.model.CategoryModel;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.thitiphat.feedfold.R;
+import com.thitiphat.feedfold.util.CategoryModel;
 
 public class CategoryActivity extends AppCompatActivity implements View.OnClickListener {
 

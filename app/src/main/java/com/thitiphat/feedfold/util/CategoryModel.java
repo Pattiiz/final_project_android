@@ -1,6 +1,4 @@
-package com.thitiphat.feedfold.model;
-
-import android.support.v7.widget.RecyclerView;
+package com.thitiphat.feedfold.util;
 
 import java.util.ArrayList;
 import java.util.List;
