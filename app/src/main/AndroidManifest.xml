@@ -23,7 +23,7 @@
         <activity android:name=".ItemDetailActivity" />
         <activity android:name=".CategoryActivity" />
         <activity android:name=".SourceActivity" />
-
+        <activity android:name=".BookmarkActivity"></activity>
     </application>
 
 </manifest>

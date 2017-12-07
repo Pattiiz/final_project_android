@@ -16,6 +16,7 @@ public class SortItem {
     List<FeedModel> list = new ArrayList<>();
 
     public SortItem() {
+
     }
 
     public List<FeedModel> sortList(List<FeedModel> feedModelList) {
@@ -37,7 +38,6 @@ public class SortItem {
         }
 
         return inverseList;
-
     }
 
     public List<FeedModel> getList() {

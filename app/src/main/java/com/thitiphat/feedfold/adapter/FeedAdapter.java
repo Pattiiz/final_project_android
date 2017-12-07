@@ -39,10 +39,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.Holder> {
         this.itemListener = itemListener;
     }
 
-    public List<FeedModel> getFeedList() {
-        return feedList;
-    }
-
     public void setFeedList(List<FeedModel> feedList, Context context) {
         this.feedList = feedList;
         this.context = context;
@@ -50,7 +46,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.Holder> {
 
     public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-        public TextView tvTitle, tvDate, tvDescription;
+        public TextView tvTitle, tvDate;
 
         public Holder(View itemView) {
             super(itemView);
@@ -64,8 +60,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.Holder> {
         public void onClick(View v) {
             int pos = getLayoutPosition();
             if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-//                itemListener.reyclerViewListClicked(v, pos);
-//                Toast.makeText(context, "U click + " + feedList.get(pos).getTitle(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, ItemDetailActivity.class);
                 intent.putExtra("title", feedList.get(pos).getTitle());
                 intent.putExtra("description", feedList.get(pos).getDescription());
@@ -74,7 +68,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.Holder> {
                 intent.putExtra("creator", feedList.get(pos).getCreator());
                 context.startActivity(intent);
             }
-
         }
 
         @Override
@@ -92,10 +85,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.Holder> {
                 if (bookmark == null) {
                     bookmarkList.add(feedList.get(pos));
                 } else {
-                    bookmarkList = new Gson().fromJson(bookmark, List.class);
+                    bookmarkList = new Gson().fromJson(bookmark, bookmarkList.getClass());
                     bookmarkList.add(feedList.get(pos));
                 }
-
 
                 final List<FeedModel> finalBookmarkList = bookmarkList;
                 Snackbar.make(itemView, "add " + feedList.get(pos).getTitle(), Snackbar.LENGTH_LONG)
@@ -105,7 +97,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.Holder> {
                                 finalBookmarkList.remove(finalBookmarkList.size() - 1);
                             }
                         }).show();
-
 
                 String bm = new Gson().toJson(bookmarkList);
                 editor.putString("bookmark", bm);
@@ -129,19 +120,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.Holder> {
     public void onBindViewHolder(Holder holder, int position) {
         TextView title = holder.tvTitle;
         TextView date = holder.tvDate;
-//        if (position != 0) {
         title.setText(feedList.get(position).getTitle());
         date.setText(feedList.get(position).getPubDate());
-//        }
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            description.setText(Html.fromHtml(feedList.get(position).getDescription().toString(), Html.FROM_HTML_MODE_COMPACT) + "\n");
-//        } else {
-//            description.setText(Html.fromHtml(feedList.get(position).getDescription().toString()) + "\n");
-//        }
     }
-
-
 
     @Override
     public int getItemCount() {

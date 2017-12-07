@@ -22,8 +22,6 @@ public class SourceActivity extends AppCompatActivity {
         toolbar.setTitle("Add Source");
         setSupportActionBar(toolbar);
 
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 

@@ -10,8 +10,6 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -21,26 +19,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Xml;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.thitiphat.feedfold.Interface.RecyclerViewClickListener;
 import com.thitiphat.feedfold.adapter.FeedAdapter;
 import com.thitiphat.feedfold.model.FeedModel;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthToken;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -55,6 +42,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements RecyclerViewClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     List<FeedModel> feedList = new ArrayList<>();
+    List<FeedModel> bookmarkList = new ArrayList<>();
     String result, title, link, description, creator, ns = null;
     String date;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -63,13 +51,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     List<String> srcList = new ArrayList<>();
     FeedAdapter feedAdapter = new FeedAdapter();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 
         context = getApplicationContext();
 
@@ -83,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-
         NavigationView navigationView = findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -96,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
             return;
         }
 
-        if (!checkInernetConnection()) {
+        if (!checkInternetConnection()) {
             displayDialog();
         }
 
@@ -124,21 +108,29 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
             startActivity(intent);
         }
         if (item.getItemId() == R.id.action_refresh) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            String src = sharedPreferences.getString("json", null);
-            if (src != null) {
-                srcList = new Gson().fromJson(src, List.class);
+            if (!checkInternetConnection()) {
+                displayDialog();
+            } else {
+                refreshFeed();
             }
-            LoadXml loadXml = new LoadXml();
-            feedList.clear();
-            feedAdapter.notifyDataSetChanged();
-            loadXml.execute(srcList);
         }
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void refreshFeed() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String src = sharedPreferences.getString("json", null);
+        if (src != null) {
+            srcList = new Gson().fromJson(src, List.class);
+        }
+        LoadXml loadXml = new LoadXml();
+        feedList.clear();
+        feedAdapter.notifyDataSetChanged();
+        loadXml.execute(srcList);
     }
 
     @Override
@@ -150,16 +142,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.nav_timeline) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            String src = sharedPreferences.getString("json", null);
-            if (src != null) {
-                srcList = new Gson().fromJson(src, List.class);
-            }
-            LoadXml loadXml = new LoadXml();
-            feedList.clear();
-            feedAdapter.notifyDataSetChanged();
-            loadXml.execute(srcList);
+            refreshFeed();
 
             TextView userTwitter = findViewById(R.id.tv_userTW);
             userTwitter.setText(getIntent().getStringExtra("userTwitter"));
@@ -167,16 +150,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
             drawerLayout.closeDrawers();
         }
         if (item.getItemId() == R.id.nav_bookmark) {
-//            SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            String src = sharedPreferences.getString("bookmark", null);
-//
-//            feedList.clear();
-//            feedAdapter.notifyDataSetChanged();
-//            if (src != null) {
-//                feedList = new Gson().fromJson(src, List.class);
-//            }
-//            setAdapter();
+//            Intent intent = new Intent(MainActivity.this, BookmarkActivity.class);
+//            startActivity(intent);
 
             TextView userTwitter = findViewById(R.id.tv_userTW);
             userTwitter.setText(getIntent().getStringExtra("userTwitter"));
@@ -185,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         return false;
     }
 
-    public Boolean checkInernetConnection() {
+    public Boolean checkInternetConnection() {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -297,5 +272,4 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         inputStream.close();
         return feedList;
     }
-
 }

@@ -40,13 +40,10 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
 
         ImageView ivTech = findViewById(R.id.ivCategoryTech);
         ivTech.setOnClickListener(this);
-
         ImageView ivMark = findViewById(R.id.ivCategoryMark);
         ivMark.setOnClickListener(this);
-
         ImageView ivDesign = findViewById(R.id.ivCategoryDesign);
         ivDesign.setOnClickListener(this);
-
         ImageView ivPhotograph = findViewById(R.id.ivCategoryPhoto);
         ivPhotograph.setOnClickListener(this);
     }

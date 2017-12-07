@@ -108,7 +108,6 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.Holder> {
 
         @Override
         public void onClick(View v) {
-
             int pos = getLayoutPosition();
 
             SharedPreferences sharedPreferences = context.getSharedPreferences("list", Context.MODE_PRIVATE);
